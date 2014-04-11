@@ -19,7 +19,7 @@ Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。<br>
     ),
 ),
 </pre>
-	可选配置：
+	<p>可选配置：</p>
 <pre>
 'controllerMap'=>array(
     'ueditor'=>array(
