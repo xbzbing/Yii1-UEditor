@@ -6,7 +6,7 @@ Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。<br>
 使用TP框架的tpImage来生成和处理图片。
 
 ###配置说明
---------------
+---------------------
 <ul>
 <li>
 1、将ueditor放在项目的/protected/extensions/目录下。
@@ -52,6 +52,9 @@ $this->widget('ext.ueditor.UeditorWidget',
 </li>
 <li>
 4、错误排除<br>
-出现错误请查看上传目录的权限问题。默认上次到根目录的upload/目录。
+出现错误请查看上传目录的权限问题。默认上次到根目录的upload/目录。<br>
 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 </li>
+其他说明
+---------------------
+http://www.crazydb.com/archive/%E7%99%BE%E5%BA%A6%E7%BC%96%E8%BE%91%E5%99%A8UEditor%E7%9A%84Yii%E6%89%A9%E5%B1%95
