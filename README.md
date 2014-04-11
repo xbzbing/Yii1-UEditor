@@ -57,4 +57,4 @@ $this->widget('ext.ueditor.UeditorWidget',
 </li>
 其他说明
 ---------------------
-http://www.crazydb.com/archive/%E7%99%BE%E5%BA%A6%E7%BC%96%E8%BE%91%E5%99%A8UEditor%E7%9A%84Yii%E6%89%A9%E5%B1%95
+其他事项可以参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展
