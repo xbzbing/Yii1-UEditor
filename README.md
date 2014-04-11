@@ -12,42 +12,42 @@ Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。<br>
 </li>
 <li>
 2、在config.php中配置controllerMap，来指定ueditor的访问路径
-    <pre>
-	'controllerMap'=>array(
-		'ueditor'=>array(
-			'class'=>'ext.ueditor.UeditorController',
-		),
-	),
-    </pre>
+<pre>
+'controllerMap'=>array(
+    'ueditor'=>array(
+        'class'=>'ext.ueditor.UeditorController',
+    ),
+),
+</pre>
 	可选配置：
-    <pre>
-    'controllerMap'=>array(
-        'ueditor'=>array(
-            'class'=>'ext.ueditor.UeditorController',
-            //文件保存位置
-            'savePath'=>'upload/'
-            //允许的文件扩展名
-            'allowFiles'=>array(
-                //上传图片
-                'image' => array(".gif", ".png", ".jpg", ".jpeg", ".bmp"),
-                //上传附件同时包括 image和file
-                'file' => array( ".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf" , ".wmv" ),
-            ),
+<pre>
+'controllerMap'=>array(
+    'ueditor'=>array(
+        'class'=>'ext.ueditor.UeditorController',
+        //文件保存位置
+        'savePath'=>'upload/'
+        //允许的文件扩展名
+        'allowFiles'=>array(
+            //上传图片
+            'image' => array(".gif", ".png", ".jpg", ".jpeg", ".bmp"),
+            //上传附件同时包括 image和file
+            'file' => array( ".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf" , ".wmv" ),
         ),
     ),
-    </pre>
+),
+</pre>
     其中savePath还支持Yii::app()->params['UESavePath']的方式设置。
 </li>
 <li>
 3、在view中使用widget。
     在原有的view中添加即可，注意id填写为原有的textarea的id。
-    <pre>
-    $this->widget('ext.ueditor.UeditorWidget',
-            array(
-                    'id'=>'Post_content'
-            )
-    );
-    </pre>
+<pre>
+$this->widget('ext.ueditor.UeditorWidget',
+        array(
+                'id'=>'Post_content'
+        )
+);
+</pre>
 </li>
 <li>
 4、错误排除
