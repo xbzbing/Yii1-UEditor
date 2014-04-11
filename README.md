@@ -1,12 +1,16 @@
 Ueditor-yiiv1.x-ext
 ===================
 
-Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。
-支持自动的缩略图管理。
+Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。<br>
+支持自动的缩略图管理。<br>
 使用TP框架的tpImage来生成和处理图片。
 
 ===================
+<ul>
+<li>
 1、将ueditor放在项目的/protected/extensions/目录下。
+</li>
+<li>
 2、在config.php中配置controllerMap，来指定ueditor的访问路径
 	'controllerMap'=>array(
 		'ueditor'=>array(
@@ -29,6 +33,8 @@ Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。
         ),
     ),
     其中savePath还支持Yii::app()->params['UESavePath']的方式设置。
+</li>
+<li>
 3、在view中使用widget。
     在原有的view中添加即可，注意id填写为原有的textarea的id。
     $this->widget('ext.ueditor.UeditorWidget',
@@ -36,5 +42,8 @@ Yii v1.x 的Ueditor扩展，支持的Ueditor版本为1.3.6。
                     'id'=>'Post_content'
             )
     );
+</li>
+<li>
 4、错误排除
 出现错误请查看上传目录的权限问题。默认上次到根目录的upload/目录。
+</li>
