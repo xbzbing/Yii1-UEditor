@@ -50,6 +50,6 @@ $this->widget('ext.ueditor.UeditorWidget',
 </pre>
 </li>
 <li>
-4、错误排除
+4、错误排除<br>
 出现错误请查看上传目录的权限问题。默认上次到根目录的upload/目录。
 </li>
