@@ -101,8 +101,8 @@ class UeditorController extends CExtController{
         //修正图片保存路径
         //默认的图片保存位置是跟路径的image和ugc个人用户文件夹
         $this->imgPath = array(
-            'upload'=>$this->savePath.'image/',
-            'ugc'=>$this->savePath.Yii::app()->user->id.'/image/'
+            '上传目录'=>$this->savePath.'image/',
+            '个人文件夹'=>$this->savePath.Yii::app()->user->id.'/image/'
         );
         //img是file文件夹
         $this->filePath = $this->savePath.'file/';
