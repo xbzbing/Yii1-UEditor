@@ -26,7 +26,7 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.3.6。<br>
     'ueditor'=>array(
         'class'=>'ext.ueditor.UeditorController',
         //文件保存位置
-        'savePath'=>'upload/'
+        'savePath'=>'upload/',
         //允许的文件扩展名
         'allowFiles'=>array(
             //上传图片
