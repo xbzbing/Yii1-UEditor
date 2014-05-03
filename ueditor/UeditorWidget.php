@@ -201,11 +201,6 @@ class UeditorWidget extends CWidget {
                 imgObjs[i].src = imgObjs[i].src.replace(".thumbnail","");
             }
         });
-        editor.addListener( "beforeInsertImage", function ( type, imgObjs ) {
-            for(var i=0;i < imgObjs.length;i++){
-                console.debug(imgObjs[i].src);
-            }
-        });
 JS;
         $this->js = $js.$this->js;
         $cs->registerScript('ueditor_'.$this->id, $this->js, CClientScript::POS_END);
