@@ -26,7 +26,6 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
 'controllerMap'=>array(
     'ueditor'=>array(
         'class'=>'ext.ueditor.UeditorController',
-        //文件保存位置
         'config'=>array(),//参考config.json的配置，此处的配置具备最高优先级
         'thumbnail'=>true,//是否开启缩略图
         'watermark'=>'',//水印图片的地址，使用相对路径
