@@ -55,6 +55,6 @@ $this->widget('ext.ueditor.UeditorWidget',
 其他说明
 ---------------------
 1、原1.3.6版本插件<br>
-因为1.3.6版本作为一个比较稳定的版本，还是保留下载地址。<br>
+因为1.3.6版本作为一个比较稳定的版本，还是具备一定的使用价值（支持IE6/7，1.4.3以上版本将不再承诺支持IE6/7），因此保留下载地址。<br>
 下载地址：http://www.crazydb.com/upload/file/20140531/7384_yii-ext-ueditor136.tar.gz<br>
 参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展<br>
