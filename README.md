@@ -1,8 +1,9 @@
 UEditor-yiiv1.x-ext
 ===================
 
-Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.3.6。<br>
+Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
 支持自动的缩略图管理。<br>
+支持水印。<br>
 使用TP框架的tpImage来生成和处理图片。
 
 ###配置说明
@@ -26,22 +27,18 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.3.6。<br>
     'ueditor'=>array(
         'class'=>'ext.ueditor.UeditorController',
         //文件保存位置
-        'savePath'=>'upload/',
-        //允许的文件扩展名
-        'allowFiles'=>array(
-            //上传图片
-            'image' => array(".gif", ".png", ".jpg", ".jpeg", ".bmp"),
-            //上传附件同时包括 image和file
-            'file' => array( ".rar" , ".doc" , ".docx" , ".zip" , ".pdf" , ".txt" , ".swf" , ".wmv" ),
-        ),
+        'config'=>array(),//参考config.json的配置，此处的配置具备最高优先级
+        'thumbnail'=>true,//是否开启缩略图
+        'watermark'=>'',//水印图片的地址
+        'locate'=>9,//水印位置，1-9，默认为9在右下角
     ),
 ),
 ```
-    其中savePath还支持Yii::app()->params['UESavePath']的方式设置。
 </li>
 <li>
 3、在view中使用widget。
     在原有的view中添加即可，注意id填写为原有的textarea的id。
+    注意，使用这个widget时，不要删除原有的代码，只要添加此处的代码即可。
 ```php
 $this->widget('ext.ueditor.UeditorWidget',
         array(
@@ -57,4 +54,8 @@ $this->widget('ext.ueditor.UeditorWidget',
 </li>
 其他说明
 ---------------------
-其他事项可以参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展
+其他事项可以参考：
+1、原1.3.6版本插件
+因为1.3.6版本作为一个比较稳定的版本，还是保留下载地址。
+下载地址：http://www.crazydb.com/upload/file/20140531/7384_yii-ext-ueditor136.tar.gz
+参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展
