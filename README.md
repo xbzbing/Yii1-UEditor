@@ -29,7 +29,7 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
         //文件保存位置
         'config'=>array(),//参考config.json的配置，此处的配置具备最高优先级
         'thumbnail'=>true,//是否开启缩略图
-        'watermark'=>'',//水印图片的地址
+        'watermark'=>'',//水印图片的地址，使用相对路径
         'locate'=>9,//水印位置，1-9，默认为9在右下角
     ),
 ),
@@ -42,7 +42,8 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
 ```php
 $this->widget('ext.ueditor.UeditorWidget',
         array(
-                'id'=>'Post_content'
+                'id'=>'Post_content',//页面中输入框（或其他初始化容器）的ID
+                'name'=>'editor',//指定ueditor实例的名称,个页面有多个ueditor实例时使用
         )
 );
 ```
