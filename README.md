@@ -49,7 +49,7 @@ $this->widget('ext.ueditor.UeditorWidget',
 </li>
 <li>
 4、错误排除<br>
-出现错误请查看上传目录的权限问题。默认上次到根目录的upload/目录。<br>
+出现错误请查看上传目录的权限问题。默认上传到根目录的upload/目录。<br>
 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 </li>
 其他说明
@@ -58,3 +58,5 @@ $this->widget('ext.ueditor.UeditorWidget',
 因为1.3.6版本作为一个比较稳定的版本，还是具备一定的使用价值（支持IE6/7，1.4.3以上版本将不再承诺支持IE6/7），因此保留下载地址。<br>
 下载地址：http://www.crazydb.com/upload/file/20140531/7384_yii-ext-ueditor136.tar.gz<br>
 参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展<br>
+2、1.4.3版本插件<br>
+参考地址：http://www.crazydb.com/archive/UEditor1.4.3-for-Yii1-扩展
