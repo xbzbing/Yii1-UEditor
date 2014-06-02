@@ -21,7 +21,9 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
     ),
 ),
 ```
+
 	可选配置：
+
 ```php
 'controllerMap'=>array(
     'ueditor'=>array(
@@ -35,8 +37,8 @@ Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
 ```
 </li>
 <li>
-3、在view中使用widget。
-    在原有的view中添加即可，注意id填写为原有的textarea的id。
+3、在view中使用widget。<br>
+    在原有的view中添加即可，注意id填写为原有的textarea的id。<br>
     注意，使用这个widget时，不要删除原有的代码，只要添加此处的代码即可。
 ```php
 $this->widget('ext.ueditor.UeditorWidget',
@@ -49,7 +51,8 @@ $this->widget('ext.ueditor.UeditorWidget',
 </li>
 <li>
 4、错误排除<br>
-出现错误请查看上传目录的权限问题。默认上传到根目录的upload/目录。<br>
+出现错误请查看上传目录的权限问题。<br>
+默认上传到「应用」根目录（不是网站根目录）的upload/目录。<br>
 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 </li>
 其他说明
