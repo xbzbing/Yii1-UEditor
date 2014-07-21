@@ -52,7 +52,7 @@ class UeditorController extends CExtController{
     public function init(){
         error_reporting(0);
         date_default_timezone_set( 'PRC' );
-        header( "Content-Type: text/json; charset=utf-8" );
+        header( "Content-Type: text/html; charset=utf-8" );
 
         //权限判断
         //这里仅判断是否登录
