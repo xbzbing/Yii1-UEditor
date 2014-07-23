@@ -1,7 +1,7 @@
 Yii1-ueditor-ext
 ===================
 项目更名为Yii1-ueditor-ext，采用2推荐的方式重新命名，方便管理。<br>
-Yii v1.x 的Ueditor扩展，支持的UEditor版本为1.4.3。<br>
+Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。<br>
 支持自动的缩略图管理。<br>
 支持水印。<br>
 使用TP框架的tpImage来生成和处理图片。
