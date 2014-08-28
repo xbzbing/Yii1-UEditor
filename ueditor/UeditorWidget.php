@@ -68,7 +68,7 @@ class UeditorWidget extends CWidget {
             'config.json',
             'index.html'
         );
-        $this->_assetUrl = $assetManager->publish( __DIR__ . DIRECTORY_SEPARATOR . 'resources' );
+        $this->_assetUrl = $assetManager->publish( dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources' );
 
         //注册资源文件
         $cs = Yii::app()->clientScript;
@@ -81,44 +81,47 @@ class UeditorWidget extends CWidget {
         }
         if($this->options==null){
             // toolbar
-            $this->options = "toolbars:[
-            ['fullscreen','source','undo','redo','|','customstyle','paragraph','fontfamily','fontsize'],
-			['bold','italic','underline','fontborder','strikethrough','superscript','subscript','removeformat',
-			'formatmatch', 'autotypeset', 'blockquote', 'pasteplain','|',
-			'forecolor','backcolor','insertorderedlist','insertunorderedlist','|',
-            'rowspacingtop','rowspacingbottom', 'lineheight','|',
-            'directionalityltr','directionalityrtl','indent','|'],
-            ['justifyleft','justifycenter','justifyright','justifyjustify','|','link','unlink','|',
-            'insertimage','emotion','scrawl','insertvideo','music','attachment','map',
-            'insertcode','pagebreak','|',
-            'horizontal','inserttable','|',
-            'print','preview','searchreplace','help']
-        	]";
-            //others
-            $this->options .= "
-            ,lang:'zh-cn'
-            ,wordCountMsg: '已经输入{#count}个字符。'
-            ,maximumWords: 10240
-            ,wordOverFlowMsg: '输入字符数目已经超过10240，过大可能会导致提交失败！'";
+                //常规模式
+                $this->options = <<<TOOLBAR
+    toolbars:[['fullscreen','source','undo','redo','|','customstyle','paragraph','fontfamily','fontsize'],
+        ['bold','italic','underline','fontborder','strikethrough','superscript','subscript','removeformat',
+        'formatmatch', 'autotypeset', 'blockquote', 'pasteplain','|',
+        'forecolor','backcolor','insertorderedlist','insertunorderedlist','|',
+        'rowspacingtop','rowspacingbottom', 'lineheight','|',
+        'directionalityltr','directionalityrtl','indent','|'],
+        ['justifyleft','justifycenter','justifyright','justifyjustify','|','link','unlink','|',
+        'insertimage','emotion','scrawl','insertvideo','music','attachment','map',
+        'insertcode','pagebreak','|',
+        'horizontal','inserttable','|',
+        'print','preview','searchreplace','help']]
+TOOLBAR;
+                //others
+                $this->options .= <<<OTHRES
+    ,lang:'zh-cn'
+    ,wordCountMsg: '已经输入{#count}个字符。'
+    ,maximumWords: 10240
+    ,wordOverFlowMsg: '输入字符数目已经超过10240，过大可能会导致提交失败！'
+OTHRES;
         }
 
         $options = $this->options;
-        $options .= ",initialFrameHeight:'{$this->initialFrameHeight}'
-            ,initialFrameWidth:'{$this->initialFrameWidth}'";
-
+        $options .= <<<INIT
+    ,initialFrameHeight:'{$this->initialFrameHeight}'
+    ,initialFrameWidth:'{$this->initialFrameWidth}'
+INIT;
         $js = <<<UEDITOR
-        var {$this->name} = UE.getEditor('{$this->id}',{
-            UEDITOR_HOME_URL:'{$this->_assetUrl}/'
-            ,serverUrl: '{$this->serverUrl}'
-            ,{$options}
+    var {$this->name} = UE.getEditor('{$this->id}',{
+        UEDITOR_HOME_URL:'{$this->_assetUrl}/'
+        ,serverUrl: '{$this->serverUrl}'
+        ,{$options}
+    });
+    {$this->name}.ready(function(){
+        this.addListener( "beforeInsertImage", function ( type, imgObjs ) {
+            for(var i=0;i < imgObjs.length;i++){
+                imgObjs[i].src = imgObjs[i].src.replace(".thumbnail","");
+            }
         });
-        {$this->name}.ready(function(){
-            this.addListener( "beforeInsertImage", function ( type, imgObjs ) {
-                for(var i=0;i < imgObjs.length;i++){
-                    imgObjs[i].src = imgObjs[i].src.replace(".thumbnail","");
-                }
-            });
-        });
+    });
 UEDITOR;
         $cs->registerScript('ueditor_'.$this->id, $js, CClientScript::POS_END);
     }
