@@ -1,11 +1,11 @@
 <?php
 /**
- * Ueditor的controller
+ * UEditor的controller
  * @author xbzbing<xbzbing@gmail.com>
  * @link www.crazydb.com
  *
  * UEditor版本v1.4.3
- * Yii版本v1.1.14
+ * Yii版本v1.1.15
  * 增加缩略图、水印功能。
  */
 class UeditorController extends CExtController{
