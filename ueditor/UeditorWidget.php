@@ -68,7 +68,7 @@ class UeditorWidget extends CWidget {
             'config.json',
             'index.html'
         );
-        $this->_assetUrl = $assetManager->publish( __DIR__ . DIRECTORY_SEPARATOR . 'resources' );
+        $this->_assetUrl = $assetManager->publish( dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources' );
 
         //注册资源文件
         $cs = Yii::app()->clientScript;

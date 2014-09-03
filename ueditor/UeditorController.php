@@ -65,7 +65,7 @@ class UeditorController extends CExtController{
         }
 
         //保留UE默认的配置引入方式
-        $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", '', file_get_contents(__DIR__.'/resources/php/config.json')), true);
+        $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", '', file_get_contents(dirname(__FILE__).'/resources/php/config.json')), true);
 
         if(!is_array($this->config))
             $this->config = array();
@@ -85,8 +85,8 @@ class UeditorController extends CExtController{
         );
         $this->config = $this->config + $default + $CONFIG;
         //导入上传类
-        require(__DIR__.'/resources/php/Uploader.class.php');
-        require(__DIR__.'/tpImage.php');
+        require(dirname(__FILE__).'/resources/php/Uploader.class.php');
+        require(dirname(__FILE__).'/tpImage.php');
     }
 
     /**
