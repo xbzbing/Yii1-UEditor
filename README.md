@@ -4,6 +4,8 @@ Yii1-ueditor-ext
 
 Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
+测试使用的PHP版本为5.5.9。
+
 支持自动的缩略图管理。
 
 支持水印。

@@ -3,7 +3,7 @@
  * @author xbzbing<xbzbing@gmail.com>
  * @link www.crazydb.com
  * UEditor版本v1.4.3
- * Yii版本v1.1.14
+ * Yii版本v1.1.15
  * 使用widget请配置容器的id，如果在一个页面使用多个ueditor，
  * 需要配置name属性，默认的name属性为editor。
  */
