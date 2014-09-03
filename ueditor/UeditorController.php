@@ -52,15 +52,17 @@ class UeditorController extends CExtController{
     public function init(){
         error_reporting(0);
         date_default_timezone_set( 'PRC' );
-        header( "Content-Type: text/json; charset=utf-8" );
+        header( "Content-Type: text/html; charset=utf-8" );
 
         //权限判断
         //这里仅判断是否登录
         //更多的权限判断需自行扩展
         //当客户使用低版本IE时，会使用swf上传插件，维持认证状态可以参考文档UEditor「自定义请求参数」部分。
         //http://fex.baidu.com/ueditor/#server-server_param
-        if(Yii::app()->user->isGuest){
-            echo '{"url":"null","fileType":"null","original":"null","state":"Failed:没有上传权限！"}';
+        //请求config（配置信息）不需要登录权限
+        $action = Yii::app()->request->getParam('action');
+        if($action!='config' && Yii::app()->user->isGuest){
+            echo '{"url":"null","fileType":"null","original":"null","state":"Failed:[需要登录]没有上传权限！"}';
             Yii::app()->end();
         }
 
@@ -103,9 +105,8 @@ class UeditorController extends CExtController{
             'catchimage'=>'CatchImage',
             'config'=>'Config'
         );
-        $action = $_GET['action'];
-        if(array_key_exists($action,$actions)){
-            $this->run($actions[$action]);
+        if(isset($actions[$_GET['action']])){
+            $this->run($actions[$_GET['action']]);
         }else{
             $this->show(json_encode(array(
                 'state'=> '请求地址出错'
