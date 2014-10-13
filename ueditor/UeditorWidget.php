@@ -65,7 +65,6 @@ class UeditorWidget extends CWidget {
             'action_list.php',
             'controller.php',
             'Uploader.class.php',
-            'config.json',
             'index.html'
         );
         $this->_assetUrl = $assetManager->publish( dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources' );
