@@ -109,7 +109,7 @@ class EditorController extends UeditorController{
     ));
 ```
 
-widget默认的serverUrl为／ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
+widget默认的serverUrl为/ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
 
 将thumbnail属性设置为false，则前台不会附加缩略图管理。
 
@@ -131,3 +131,4 @@ widget默认的serverUrl为／ueditor，如果自己写了controller或者在con
 其他说明
 ---------------------
 @see https://github.com/fex-team/ueditor
+参考：[［更新］UEditor1.4.3-for-Yii1-扩展](http://www.crazydb.com/archive/更新_UEditor1.4.3-for-Yii1-扩展 UEditor1.4.3-for-Yii1-扩展)
