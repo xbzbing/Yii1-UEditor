@@ -1,23 +1,50 @@
-Yii1-ueditor-ext
+Yii1-UEditor
 ===================
-项目更名为Yii1-ueditor-ext，采用2推荐的方式重新命名，方便管理。
+项目更名为Yii1-UEditor，采用2推荐的方式重新命名，方便管理。
 
 Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
-测试使用的PHP版本为5.5.9。
+测试使用的PHP版本为5.5.9，测试使用的Yii版本是1.1.15，采用alias的方式部署在Ubuntu apache 2.4.7。
 
-支持自动的缩略图管理。
+扩展特性：
 
-支持水印。
+支持自动的缩略图管理（默认开启，可以关闭）。
+
+支持水印（默认关闭，可以开启）。
 
 使用TP框架的tpImage来生成和处理图片。
+
+注意：2015.2.2 更新版本与之前并不兼容，本次修改更符合InputWidget的定义，扩展使用时将不在需要原有的输入框。
 
 配置说明
 ---------------------
 
 1、将ueditor放在项目的/protected/extensions/目录下。
 
-2、在config.php中配置controllerMap，来指定ueditor的访问路径
+2、配置UEditor的后台控制器（serverUrl）
+
+方法有两种
+
+1）、自己写controller
+
+在/protected/controllers目录新建一个EditorController，并继承UeditorController。
+
+```php
+Yii::import('ext.ueditor.UeditorController');
+class EditorController extends UeditorController{
+//自定义修改
+}
+```
+
+这时候serverUrl为刚才新建的EditorController，在下面配置widget时候要特别注意。
+
+这样做的好处是，可以自定义多种使用场景，较为灵活。
+
+2）配置controllerMap
+
+在config.php中配置controllerMap，来指定ueditor的后端控制器。
+
+当有多个使用场景时，可以配置多个map，在widget使用时指定serverUrl即可。
 
 ```php
     'controllerMap'=>array(
@@ -40,45 +67,65 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
         ),
     ),
 ```
+
+这样做的好处是，配置方便快捷，不需要增加额外的controller。
+
+
+
+具体的config配置参考[UEditor后端配置项说明](http://fex.baidu.com/ueditor/#server-config 后端配置项说明.md)
+
 3、在view中使用widget。
 
-在原有的view中添加即可，注意id填写为原有的textarea的id。
+注意：这里与上一个版本不同，这里需要删除原来的输入框，widget会自动生成。
 
-注意，使用这个widget时，不要删除原有的代码，只要添加此处的代码即可。
+配合AR使用：
 
 ```php
     $this->widget('ext.ueditor.UeditorWidget',
             array(
-                    'id'=>'Post_content',//页面中输入框（或其他初始化容器）的ID
-                    'name'=>'editor',//指定ueditor实例的名称,个页面有多个ueditor实例时使用
-            )
-    );
+                'model' => $model,
+                'attribute' => 'content',
+                'htmlOptions' => array('rows'=>6, 'cols'=>50)
+    ));
 ```
+
+当作普通表单使用:
+
+```php
+    $this->widget('ext.ueditor.UeditorWidget',
+        array(
+            'id'=>'Post_excerpt',
+            'name'=>'excerpt_editor',
+            'value' => '输入值',
+            'config'=>array(
+                'serverUrl' => Yii::app()->createUrl('editor/'),//指定serverUrl
+                'toolbars'=>array(
+                    array('source','link','bold','italic','underline','forecolor','superscript','insertimage','spechars','blockquote')
+                ),
+                'initialFrameHeight'=>'150',
+                'initialFrameWidth'=>'95%'
+            ),
+            'htmlOptions' => array('rows'=>3,'class'=>'span12 autogrow controls')
+    ));
+```
+
+widget默认的serverUrl为／ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
+
+具体的config配置参考[UEditor前端配置项说明](http://fex.baidu.com/ueditor/#start-config 前端配置项说明.md)
+
 4、错误排除
 
 - 出现错误首先应该打开调试工具查看请求返回具体信息。
 
-- 出现错误请查看上传目录的权限问题。
+- 因为编辑器通常使用场景为后台，所以图片上传等功能默认需要登录权限，如果不需要可以自行修改。
 
-- 扩展默认情况下需要登录权限才能上传文件。
-
-- 默认上传到「应用」根目录（不是网站根目录）的upload/目录。
+- 默认上传路径为「应用根目录」，而不是网站根目录，如果上传失败请查看目录权限。
 
 - 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 
-- 出现404错误可能是因为没有配置controllerMap。
+- 出现404错误可能是因为没有正确配置serverUrl。
 
 
 其他说明
 ---------------------
-1、1.4.3版本插件
-
-参考地址：http://www.crazydb.com/archive/UEditor1.4.3-for-Yii1-扩展
-
-2、原1.3.6版本插件
-
-因为1.3.6版本作为一个比较稳定的版本，还是具备一定的使用价值（支持IE6/7，1.4.3以上版本将不再承诺支持IE6/7），因此保留下载地址。
-
-下载地址：http://www.crazydb.com/upload/file/20140531/7384_yii-ext-ueditor136.tar.gz
-
-参考：http://www.crazydb.com/archive/百度编辑器UEditor的Yii扩展
+@see https://github.com/fex-team/ueditor
