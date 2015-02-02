@@ -131,4 +131,5 @@ widget默认的serverUrl为/ueditor，如果自己写了controller或者在contr
 其他说明
 ---------------------
 @see https://github.com/fex-team/ueditor
+
 参考：[［更新］UEditor1.4.3-for-Yii1-扩展](http://www.crazydb.com/archive/更新_UEditor1.4.3-for-Yii1-扩展 UEditor1.4.3-for-Yii1-扩展)
