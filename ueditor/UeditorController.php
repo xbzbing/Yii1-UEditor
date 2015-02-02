@@ -1,4 +1,5 @@
 <?php
+
 /**
  * UEditor的controller
  * @author xbzbing<xbzbing@gmail.com>
@@ -8,7 +9,8 @@
  * Yii版本v1.1.15
  * 增加缩略图、水印功能。
  */
-class UeditorController extends CExtController{
+class UeditorController extends CExtController
+{
 
     /**
      * 上传的配置，参见php/config.json
@@ -35,7 +37,7 @@ class UeditorController extends CExtController{
      * 缩略图大小
      * @var array
      */
-    public $size = array('height'=>'200','width'=>'200');
+    public $size = array('height' => '200', 'width' => '200');
 
     /**
      * 水印图片的地址
@@ -49,10 +51,16 @@ class UeditorController extends CExtController{
      */
     public $locate = 9;
 
-    public function init(){
+    protected $webroot;
+
+    protected $baseUrl;
+
+    public function init()
+    {
         error_reporting(0);
-        date_default_timezone_set( 'PRC' );
-        header( "Content-Type: text/html; charset=utf-8" );
+        date_default_timezone_set('PRC');
+        header("Content-Type: text/html; charset=utf-8");
+
 
         //权限判断
         //这里仅判断是否登录
@@ -61,69 +69,76 @@ class UeditorController extends CExtController{
         //http://fex.baidu.com/ueditor/#server-server_param
         //请求config（配置信息）不需要登录权限
         $action = Yii::app()->request->getParam('action');
-        if($action!='config' && Yii::app()->user->isGuest){
+        if ($action != 'config' && Yii::app()->user->isGuest) {
             echo '{"url":"null","fileType":"null","original":"null","state":"Failed:[需要登录]没有上传权限！"}';
             Yii::app()->end();
         }
 
+        $CONFIG = array();
         //保留UE默认的配置引入方式
-        $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", '', file_get_contents(dirname(__FILE__).'/resources/php/config.json')), true);
+        if (file_exists(dirname(__FILE__) . '/resources/php/config.json'))
+            $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", '', file_get_contents(dirname(__FILE__) . '/resources/php/config.json')), true);
 
-        if(!is_array($this->config))
+        if (!is_array($this->config))
             $this->config = array();
-        if(!is_array($CONFIG))
+        if (!is_array($CONFIG))
             $CONFIG = array();
 
-        $webroot = Yii::app()->baseUrl;
         $default = array(
-            'imagePathFormat'=>$webroot.'/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
-            'scrawlPathFormat'=>$webroot.'/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
-            'snapscreenPathFormat'=>$webroot.'/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
-            'catcherPathFormat'=>$webroot.'/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
-            'videoPathFormat'=>$webroot.'/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}',
-            'filePathFormat'=>$webroot.'/upload/file/{yyyy}{mm}{dd}/{rand:4}_{filename}',
-            'imageManagerListPath'=>$webroot.'/upload/image/',
-            'fileManagerListPath'=>$webroot.'/upload/file/',
+            'imagePathFormat' => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+            'scrawlPathFormat' => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+            'snapscreenPathFormat' => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+            'catcherPathFormat' => '/upload/image/{yyyy}{mm}{dd}/{time}{rand:6}',
+            'videoPathFormat' => '/upload/video/{yyyy}{mm}{dd}/{time}{rand:6}',
+            'filePathFormat' => '/upload/file/{yyyy}{mm}{dd}/{rand:4}_{filename}',
+            'imageManagerListPath' => '/upload/image/',
+            'fileManagerListPath' => '/upload/file/',
         );
         $this->config = $this->config + $default + $CONFIG;
+        $this->webroot = Yii::getPathOfAlias('webroot');
+        $this->baseUrl = Yii::app()->baseUrl;
         //导入上传类
-        require(dirname(__FILE__).'/resources/php/Uploader.class.php');
-        require(dirname(__FILE__).'/tpImage.php');
+        require(dirname(__FILE__) . '/Uploader.php');
+        require(dirname(__FILE__) . '/tpImage.php');
     }
 
     /**
      * 蛋疼的统一后台入口
      */
-    public function actionIndex(){
+    public function actionIndex()
+    {
         $actions = array(
-            'uploadimage'=>'UploadImage',
-            'uploadscrawl'=>'UploadScrawl',
-            'uploadvideo'=>'UploadVideo',
-            'uploadfile'=>'UploadFile',
-            'listimage'=>'ListImage',
-            'listfile'=>'ListFile',
-            'catchimage'=>'CatchImage',
-            'config'=>'Config'
+            'uploadimage' => 'UploadImage',
+            'uploadscrawl' => 'UploadScrawl',
+            'uploadvideo' => 'UploadVideo',
+            'uploadfile' => 'UploadFile',
+            'listimage' => 'ListImage',
+            'listfile' => 'ListFile',
+            'catchimage' => 'CatchImage',
+            'config' => 'Config'
         );
-        if(isset($actions[$_GET['action']])){
+        if (isset($actions[$_GET['action']])) {
             $this->run($actions[$_GET['action']]);
-        }else{
-            $this->show(json_encode(array(
-                'state'=> '请求地址出错'
-            )));
+        } else {
+            $this->show(array(
+                'state' => '请求地址出错'
+            ));
         }
     }
+
     /**
      * 显示配置信息
      */
-    public function actionConfig(){
-        $this->show(json_encode($this->config));
+    public function actionConfig()
+    {
+        $this->show($this->config);
     }
 
     /**
      * 上传图片
      */
-    public function actionUploadImage(){
+    public function actionUploadImage()
+    {
         $config = array(
             "pathFormat" => $this->config['imagePathFormat'],
             "maxSize" => $this->config['imageMaxSize'],
@@ -136,7 +151,8 @@ class UeditorController extends CExtController{
     /**
      * 上传涂鸦
      */
-    public function actionUploadScrawl(){
+    public function actionUploadScrawl()
+    {
         $config = array(
             "pathFormat" => $this->config['scrawlPathFormat'],
             "maxSize" => $this->config['scrawlMaxSize'],
@@ -146,10 +162,12 @@ class UeditorController extends CExtController{
         $fieldName = $this->config['scrawlFieldName'];
         $this->upload($fieldName, $config, 'base64');
     }
+
     /**
      * 上传视频
      */
-    public function actionUploadVideo(){
+    public function actionUploadVideo()
+    {
         $config = array(
             "pathFormat" => $this->config['videoPathFormat'],
             "maxSize" => $this->config['videoMaxSize'],
@@ -158,10 +176,12 @@ class UeditorController extends CExtController{
         $fieldName = $this->config['videoFieldName'];
         $this->upload($fieldName, $config);
     }
+
     /**
      * 上传文件
      */
-    public function actionUploadFile(){
+    public function actionUploadFile()
+    {
         $config = array(
             "pathFormat" => $this->config['filePathFormat'],
             "maxSize" => $this->config['fileMaxSize'],
@@ -174,27 +194,30 @@ class UeditorController extends CExtController{
     /**
      * 文件列表
      */
-    public function actionListFile(){
+    public function actionListFile()
+    {
         $allowFiles = $this->config['fileManagerAllowFiles'];
         $listSize = $this->config['fileManagerListSize'];
         $path = $this->config['fileManagerListPath'];
-        $this->manage($allowFiles,$listSize,$path);
+        $this->manage($allowFiles, $listSize, $path);
     }
 
     /**
      *  图片列表
      */
-    public function actionListImage(){
+    public function actionListImage()
+    {
         $allowFiles = $this->config['imageManagerAllowFiles'];
         $listSize = $this->config['imageManagerListSize'];
         $path = $this->config['imageManagerListPath'];
-        $this->manage($allowFiles,$listSize,$path);
+        $this->manage($allowFiles, $listSize, $path);
     }
 
     /**
      * 获取远程图片
      */
-    public function actionCatchImage(){
+    public function actionCatchImage()
+    {
         set_time_limit(0);
         /* 上传配置 */
         $config = array(
@@ -214,18 +237,18 @@ class UeditorController extends CExtController{
         foreach ($source as $imgUrl) {
             $item = new Uploader($imgUrl, $config, "remote");
             $info = $item->getFileInfo();
-            $info['thumbnail'] = $this->imageHandle($info['url']);
+            $info['thumbnail'] = $this->baseUrl . $this->imageHandle($info['url']);
             $list[] = array(
                 "state" => $info["state"],
-                "url" => $info["url"],
+                "url" => $this->baseUrl. $info["url"],
                 "source" => $imgUrl
             );
         }
         /* 返回抓取数据 */
-        $result = json_encode(array(
-            'state'=> count($list) ? 'SUCCESS':'ERROR',
-            'list'=> $list
-        ));
+        $result = array(
+            'state' => count($list) ? 'SUCCESS' : 'ERROR',
+            'list' => $list
+        );
         $this->show($result);
     }
 
@@ -235,14 +258,15 @@ class UeditorController extends CExtController{
      * @param $config
      * @param $base64
      */
-    protected function upload($fieldName,$config, $base64 = 'upload'){
+    protected function upload($fieldName, $config, $base64 = 'upload')
+    {
         $up = new Uploader($fieldName, $config, $base64);
         $info = $up->getFileInfo();
-        if( $this->thumbnail&&$info['state']=='SUCCESS'&&in_array($info['type'],array('.png','.jpg','.bmp','.gif'))){
-            $info['thumbnail'] = $this->imageHandle($info['url']);
+        if ($this->thumbnail && $info['state'] == 'SUCCESS' && in_array($info['type'], array('.png', '.jpg', '.bmp', '.gif'))) {
+            $info['thumbnail'] = $this->baseUrl . $this->imageHandle($info['url']);
         }
-        $result =  json_encode($info);
-        $this->show($result);
+        $info['url'] = $this->baseUrl . $info['url'];
+        $this->show($info);
     }
 
     /**
@@ -250,28 +274,29 @@ class UeditorController extends CExtController{
      * @param $fullName
      * @return mixed|string
      */
-    protected function imageHandle($fullName){
+    protected function imageHandle($fullName)
+    {
         $thumbnail = $fullName;
-        $path = $_SERVER['DOCUMENT_ROOT'];
+        $path = $this->webroot;
         if (substr($fullName, 0, 1) != '/') {
             $fullName = '/' . $fullName;
         }
-        $path = $path.$fullName;
+        $path = $path . $fullName;
 
         $image = new tpImage();
         $image2 = clone $image;
         //生成缩略图
-        if($this->thumbnail){
+        if ($this->thumbnail) {
             $image->open($path);
             $tmp = pathinfo($path);
-            $tmp = $tmp['dirname'].'/'.$tmp['filename'].'.thumbnail.'.$tmp['extension'];
-            $image->thumb($this->size['width'],$this->size['height']);
+            $tmp = $tmp['dirname'] . '/' . $tmp['filename'] . '.thumbnail.' . $tmp['extension'];
+            $image->thumb($this->size['width'], $this->size['height']);
             $image->save($tmp);
             $thumbnail = pathinfo($fullName);
-            $thumbnail = $thumbnail['dirname'].'/'.$thumbnail['filename'].'.thumbnail.'.$thumbnail['extension'];
+            $thumbnail = $thumbnail['dirname'] . '/' . $thumbnail['filename'] . '.thumbnail.' . $thumbnail['extension'];
         }
         //生成水印
-        if($this->watermark && file_exists($this->watermark)){
+        if ($this->watermark && file_exists($this->watermark)) {
             $image2->open($path);
             $image2->water($this->watermark, $this->locate);
             $image2->save($path);
@@ -286,7 +311,8 @@ class UeditorController extends CExtController{
      * @param $listSize
      * @param $path
      */
-    protected function manage($allowFiles, $listSize, $path){
+    protected function manage($allowFiles, $listSize, $path)
+    {
         $allowFiles = substr(str_replace(".", "|", join("", $allowFiles)), 1);
         /* 获取参数 */
         $size = isset($_GET['size']) ? $_GET['size'] : $listSize;
@@ -294,29 +320,29 @@ class UeditorController extends CExtController{
         $end = $start + $size;
 
         /* 获取文件列表 */
-        $path = $_SERVER['DOCUMENT_ROOT'] . (substr($path, 0, 1) == "/" ? "":"/") . $path;
+        $path = $this->webroot . (substr($path, 0, 1) == "/" ? "" : "/") . $path;
         $files = $this->getfiles($path, $allowFiles);
         if (!count($files)) {
-            $result =  json_encode(array(
+            $result = array(
                 "state" => "no match file",
                 "list" => array(),
                 "start" => $start,
                 "total" => count($files),
-            ));
+            );
             $this->show($result);
         }
         /* 获取指定范围的列表 */
         $len = count($files);
-        for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $start; $i--){
+        for ($i = min($end, $len) - 1, $list = array(); $i < $len && $i >= 0 && $i >= $start; $i--) {
             $list[] = $files[$i];
         }
         /* 返回数据 */
-        $result = json_encode(array(
+        $result = array(
             "state" => "SUCCESS",
             "list" => $list,
             "start" => $start,
             "total" => count($files),
-        ));
+        );
         $this->show($result);
     }
 
@@ -324,8 +350,10 @@ class UeditorController extends CExtController{
      * 显示最终结果，并终止运行
      * @param $result
      */
-    protected function show($result){
-        if(isset($_GET["callback"])) {
+    protected function show($result)
+    {
+        $result = json_encode($result);
+        if (isset($_GET["callback"])) {
             echo $_GET["callback"] . '(' . $result . ')';
         } else {
             echo $result;
@@ -341,10 +369,11 @@ class UeditorController extends CExtController{
      * @return array|null
      *
      */
-    protected function getfiles($path, $allowFiles, &$files = array()){
+    protected function getfiles($path, $allowFiles, &$files = array())
+    {
         if (!is_dir($path)) return null;
-        if(in_array(basename($path),$this->ignoreDir)) return null;
-        if(substr($path, strlen($path) - 1) != '/') $path .= '/';
+        if (in_array(basename($path), $this->ignoreDir)) return null;
+        if (substr($path, strlen($path) - 1) != '/') $path .= '/';
         $handle = opendir($path);
         while (false !== ($file = readdir($handle))) {
             if ($file != '.' && $file != '..') {
@@ -352,15 +381,15 @@ class UeditorController extends CExtController{
                 if (is_dir($path2)) {
                     $this->getfiles($path2, $allowFiles, $files);
                 } else {
-                    if($this->action->id == 'ListImage'&&$this->thumbnail){
-                        $pat = "/\.thumbnail\.(".$allowFiles.")$/i";
-                    }else{
-                        $pat = "/\.(".$allowFiles.")$/i";
+                    if ($this->action->id == 'ListImage' && $this->thumbnail) {
+                        $pat = "/\.thumbnail\.(" . $allowFiles . ")$/i";
+                    } else {
+                        $pat = "/\.(" . $allowFiles . ")$/i";
                     }
                     if (preg_match($pat, $file)) {
                         $files[] = array(
-                            'url'=> substr($path2, strlen($_SERVER['DOCUMENT_ROOT'])),
-                            'mtime'=> filemtime($path2)
+                            'url' => $this->baseUrl . substr($path2, strlen($this->webroot)),
+                            'mtime' => filemtime($path2)
                         );
                     }
                 }

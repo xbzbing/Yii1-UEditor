@@ -108,7 +108,7 @@ class Uploader
 
         //创建目录失败
         if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR");
+            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR").$dirname;
             return;
         } else if (!is_writeable($dirname)) {
             $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
@@ -303,7 +303,7 @@ class Uploader
     private function getFilePath()
     {
         $fullname = $this->fullName;
-        $rootPath = $_SERVER['DOCUMENT_ROOT'];
+        $rootPath = Yii::getPathOfAlias('webroot');
 
         if (substr($fullname, 0, 1) != '/') {
             $fullname = '/' . $fullname;
