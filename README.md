@@ -16,18 +16,18 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
 注意：2015.2.2 更新版本与之前并不兼容，本次修改更符合InputWidget的定义，扩展使用时将不在需要原有的输入框。
 
-配置说明
+使用说明
 ---------------------
 
 1、将ueditor放在项目的/protected/extensions/目录下。
 
-2、配置UEditor的后台控制器（serverUrl）
+2、配置UEditor的后台控制器
 
 方法有两种
 
 1）、自己写controller
 
-在/protected/controllers目录新建一个EditorController，并继承UeditorController。
+在/protected/controllers目录新建一个controller，并继承UeditorController，如下：
 
 ```php
 Yii::import('ext.ueditor.UeditorController');
@@ -70,7 +70,7 @@ class EditorController extends UeditorController{
 
 这样做的好处是，配置方便快捷，不需要增加额外的controller。
 
-
+将thumbnail属性设置为false，则后台不会生成缩略图。
 
 具体的config配置参考[UEditor后端配置项说明](http://fex.baidu.com/ueditor/#server-config 后端配置项说明.md)
 
@@ -105,11 +105,13 @@ class EditorController extends UeditorController{
                 'initialFrameHeight'=>'150',
                 'initialFrameWidth'=>'95%'
             ),
-            'htmlOptions' => array('rows'=>3,'class'=>'span12 autogrow controls')
+            'htmlOptions' => array('rows'=>3,'class'=>'span12 controls')
     ));
 ```
 
 widget默认的serverUrl为／ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
+
+将thumbnail属性设置为false，则前台不会附加缩略图管理。
 
 具体的config配置参考[UEditor前端配置项说明](http://fex.baidu.com/ueditor/#start-config 前端配置项说明.md)
 
@@ -123,7 +125,7 @@ widget默认的serverUrl为／ueditor，如果自己写了controller或者在con
 
 - 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 
-- 出现404错误可能是因为没有正确配置serverUrl。
+- 出现404错误可能是因为widget没有正确配置serverUrl。
 
 
 其他说明

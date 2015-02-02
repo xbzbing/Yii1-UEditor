@@ -3,17 +3,44 @@
 /**
  * @author xbzbing<xbzbing@gmail.com>
  * @link www.crazydb.com
+ *
  * UEditor版本v1.4.3
- * Yii版本v1.1.15
- * 使用widget请配置容器的id，如果在一个页面使用多个ueditor，
- * 需要配置name属性，默认的name属性为editor。
+ * Yii版本v1.x
+ *
+ * 配合AR使用：
+ *
+ * $this->widget('ext.ueditor.UeditorWidget',
+ * array(
+ * 'model' => $model,
+ * 'attribute' => 'content',
+ * 'htmlOptions' => array('rows'=>6, 'cols'=>50)
+ * ));
+ *
+ * 当作普通表单使用:
+ *
+ * $this->widget('ext.ueditor.UeditorWidget',
+ * array(
+ * 'id'=>'Post_excerpt',
+ * 'name'=>'excerpt_editor',
+ * 'value' => '输入值',
+ * 'config'=>array(
+ * 'serverUrl' => Yii::app()->createUrl('editor/'),//指定serverUrl
+ * 'toolbars'=>array(
+ * array('source','link','bold','italic','underline','forecolor','superscript','insertimage','spechars','blockquote')
+ * ),
+ * 'initialFrameHeight'=>'150',
+ * 'initialFrameWidth'=>'95%'
+ * ),
+ * 'htmlOptions' => array('rows'=>3,'class'=>'span12 controls')
+ * ));
+ *
  */
 class UeditorWidget extends CInputWidget
 {
 
     /**
-     * 生成的ueditor对象的名称，默认为editor。
-     * 主要用于同一个页面的多个editor实例的管理。
+     * 生成的ueditor对象的名称，默认为editor，主要用于同一个页面的多个editor实例的管理。
+     * 当使用model时，会根据model自动生成name，无需指定。
      * @var string
      */
     public $name;
@@ -27,16 +54,19 @@ class UeditorWidget extends CInputWidget
     );
 
     /**
+     * 是否附加缩略图管理，默认为true。
      * @var bool
      */
     public $thumbnail = true;
 
     /**
+     * 前端配置，详见 @see http://fex.baidu.com/ueditor/#start-config
      * @var array
      */
     public $config;
 
     /**
+     * 用于注册javascript脚本
      * @var CClientScript
      */
     protected $clientScript;
@@ -109,9 +139,8 @@ class UeditorWidget extends CInputWidget
             );
         }
 
-        if (!is_array($this->htmlOptions) || empty($this->htmlOptions)) {
+        if (!is_array($this->htmlOptions))
             $this->htmlOptions = array();
-        }
 
     }
 

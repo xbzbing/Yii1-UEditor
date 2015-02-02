@@ -6,14 +6,14 @@
  * @link www.crazydb.com
  *
  * UEditor版本v1.4.3
- * Yii版本v1.1.15
- * 增加缩略图、水印功能。
+ * Yii版本v1.x
+ * 支持缩略图、水印等功能。
  */
 class UeditorController extends CExtController
 {
 
     /**
-     * 上传的配置，参见php/config.json
+     * 后端配置，详见 @see http://fex.baidu.com/ueditor/#server-config
      * @var array
      */
     public $config = array();
@@ -28,8 +28,7 @@ class UeditorController extends CExtController
     );
 
     /**
-     * 是否自动生成缩略图
-     * 默认为true
+     * 是否自动生成缩略图，默认为true。
      * @var bool
      */
     public $thumbnail = true;
@@ -51,8 +50,16 @@ class UeditorController extends CExtController
      */
     public $locate = 9;
 
+    /**
+     * 应用根目录
+     * @var string
+     */
     protected $webroot;
 
+    /**
+     * 用于前端url修正
+     * @var  string
+     */
     protected $baseUrl;
 
     public function init()
@@ -60,7 +67,6 @@ class UeditorController extends CExtController
         error_reporting(0);
         date_default_timezone_set('PRC');
         header("Content-Type: text/html; charset=utf-8");
-
 
         //权限判断
         //这里仅判断是否登录
@@ -70,7 +76,7 @@ class UeditorController extends CExtController
         //请求config（配置信息）不需要登录权限
         $action = Yii::app()->request->getParam('action');
         if ($action != 'config' && Yii::app()->user->isGuest) {
-            echo '{"url":"null","fileType":"null","original":"null","state":"Failed:[需要登录]没有上传权限！"}';
+            $this->show(array('url'=>null,'fileType'=>null,'original'=>null,'state'=>'失败:[需要登录]没有上传权限！'));
             Yii::app()->end();
         }
 
