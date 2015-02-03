@@ -94,8 +94,8 @@ class EditorController extends UeditorController{
 ```php
     $this->widget('ext.ueditor.UeditorWidget',
         array(
-            'id'=>'Post_excerpt',
             'name'=>'excerpt_editor',
+            'id'=>'Post_excerpt',
             'value' => '输入值',
             'config'=>array(
                 'serverUrl' => Yii::app()->createUrl('editor/'),//指定serverUrl
@@ -108,6 +108,8 @@ class EditorController extends UeditorController{
             'htmlOptions' => array('rows'=>3,'class'=>'span12 controls')
     ));
 ```
+
+当扩展被当做普通表单使用时，其name为必填项。id可以通过id配置或者htmlOptions配置引入，如果没有设置id，扩展将自动生成。
 
 widget默认的serverUrl为/ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
 
