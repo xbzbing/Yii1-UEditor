@@ -37,13 +37,6 @@
  */
 class UeditorWidget extends CInputWidget
 {
-
-    /**
-     * 生成的ueditor对象的名称，默认为editor，主要用于同一个页面的多个editor实例的管理。
-     * 当使用model时，会根据model自动生成name，无需指定。
-     * @var string
-     */
-    public $name;
     /**
      * 需要引入的JS文件列表，为以后升级添加配置保证兼容。
      * 可以单独引入patch文件
@@ -149,17 +142,19 @@ class UeditorWidget extends CInputWidget
      */
     public function run()
     {
-        $id = $name = null;
-        if ($this->hasModel())
-            list($name, $id) = CHtml::getIdByName($this->resolveNameID());
-        else {
-            $id = $this->id;
-            $name = $this->name ? $this->name : 'editor';
+        if ($this->hasModel()) {
+            $id = CHtml::getIdByName(CHtml::activeName($this->model, $this->attribute));
+            $name = $this->name ? $this->name : $id;
+        } else {
+            if (empty($this->name))
+                throw new CException(Yii::t('yii', '{class} must specify "model" and "attribute" or "name" property values.', array('{class}' => get_class($this))));
+            $name = $this->name;
+            $id = isset($this->htmlOptions['id']) ? $this->htmlOptions['id'] : $this->id;
         }
 
         $config = json_encode($this->config);
 
-        $script = "var {$name} = UE.getEditor('{$id}',{$config});";
+        $script = "var {$name} = UE.getEditor('{$id}',{$config});\n";
 
         //ready部分代码，是为了缩略图管理。UEditor本身就很大，在后台直接加载大文件图片会很卡。
         if ($this->thumbnail)
