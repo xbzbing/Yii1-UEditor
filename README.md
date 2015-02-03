@@ -14,7 +14,7 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
 使用TP框架的tpImage来生成和处理图片。
 
-注意：2015.2.2 更新版本与之前并不兼容，本次修改更符合InputWidget的定义，扩展使用时将不在需要原有的输入框。
+注意：2015.2.2 更新版本与之前并不兼容，本次修改更贴近InputWidget的设计意图，扩展使用时将不再需要原有的输入框。
 
 使用说明
 ---------------------
@@ -70,13 +70,13 @@ class EditorController extends UeditorController{
 
 这样做的好处是，配置方便快捷，不需要增加额外的controller。
 
-将thumbnail属性设置为false，则后台不会生成缩略图。
+如果thumbnail属性为false，后端将不会生成缩略图。
 
-具体的config配置参考[UEditor后端配置项说明](http://fex.baidu.com/ueditor/#server-config 后端配置项说明.md)
+具体的config配置参考[UEditor后端配置项说明](http://fex.baidu.com/ueditor/#server-config 后端配置项说明.md)。
 
 3、在view中使用widget。
 
-注意：这里与上一个版本不同，这里需要删除原来的输入框，widget会自动生成。
+注意：与上一个版本不同，这里需要删除原来的输入框，widget会自动生成。
 
 配合AR使用：
 
@@ -111,9 +111,9 @@ class EditorController extends UeditorController{
 
 widget默认的serverUrl为/ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
 
-将thumbnail属性设置为false，则前台不会附加缩略图管理。
+如果thumbnail属性为false，前端将不会附加缩略图管理代码。
 
-具体的config配置参考[UEditor前端配置项说明](http://fex.baidu.com/ueditor/#start-config 前端配置项说明.md)
+具体的config配置参考[UEditor前端配置项说明](http://fex.baidu.com/ueditor/#start-config 前端配置项说明.md)。
 
 4、错误排除
 
@@ -132,4 +132,4 @@ widget默认的serverUrl为/ueditor，如果自己写了controller或者在contr
 ---------------------
 @see https://github.com/fex-team/ueditor
 
-参考：[［更新］UEditor1.4.3-for-Yii1-扩展](http://www.crazydb.com/archive/更新_UEditor1.4.3-for-Yii1-扩展 UEditor1.4.3-for-Yii1-扩展)
+参考：[［更新］UEditor1.4.3-for-Yii1-扩展](http://www.crazydb.com/archive/更新_UEditor1.4.3-for-Yii1-扩展 UEditor1.4.3-for-Yii1-扩展)。
