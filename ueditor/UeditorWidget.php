@@ -80,7 +80,7 @@ class UeditorWidget extends CInputWidget
             'Uploader.class.php',
             'index.html'
         );
-        $_assetUrl = $assetManager->publish(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources') . DIRECTORY_SEPARATOR;
+        $_assetUrl = $assetManager->publish(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'resources') . '/';
 
         //注册资源文件
         $this->clientScript = Yii::app()->clientScript;
