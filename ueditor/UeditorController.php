@@ -68,18 +68,6 @@ class UeditorController extends CExtController
         date_default_timezone_set('PRC');
         header("Content-Type: text/html; charset=utf-8");
 
-        //权限判断
-        //这里仅判断是否登录
-        //更多的权限判断需自行扩展
-        //当客户使用低版本IE时，会使用swf上传插件，维持认证状态可以参考文档UEditor「自定义请求参数」部分。
-        //http://fex.baidu.com/ueditor/#server-server_param
-        //请求config（配置信息）不需要登录权限
-        $action = Yii::app()->request->getParam('action');
-        if ($action != 'config' && Yii::app()->user->isGuest) {
-            $this->show(array('url'=>null,'fileType'=>null,'original'=>null,'state'=>'失败:[需要登录]没有上传权限！'));
-            Yii::app()->end();
-        }
-
         $CONFIG = array();
         //保留UE默认的配置引入方式
         if (file_exists(dirname(__FILE__) . '/resources/php/config.json'))

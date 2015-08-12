@@ -16,6 +16,12 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
 注意：2015.2.2 更新版本与之前并不兼容，本次修改更贴近InputWidget的设计意图，扩展使用时将不再需要原有的输入框。
 
+update：
+
+移除登录权限限制，目的时希望开发者能通过继承UeditorController来完善各个action的权限。
+
+Yii2版本的扩展参考 [Yii2-UEditor](https://github.com/xbzbing/Yii2-UEditor "Yii2版本的UEditor扩展") 。
+
 使用说明
 ---------------------
 
@@ -25,7 +31,7 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
 方法有两种
 
-1）、自己写controller
+1）、自己写controller （推荐）
 
 在/protected/controllers目录新建一个controller，并继承UeditorController，如下：
 
@@ -36,9 +42,9 @@ class EditorController extends UeditorController{
 }
 ```
 
-这时候serverUrl为刚才新建的EditorController，在下面配置widget时候要特别注意。
+这时候serverUrl为刚才新建的UeditorController，在下面配置widget时候要特别注意，widget默认的serverUrl是`ueditor/index`。
 
-这样做的好处是，可以自定义多种使用场景，较为灵活。
+这样做的好处是，可以自定义多种使用场景，并且能够自定义各个action的权限控制，非常灵活。
 
 2）配置controllerMap
 
@@ -68,7 +74,7 @@ class EditorController extends UeditorController{
     ),
 ```
 
-这样做的好处是，配置方便快捷，不需要增加额外的controller。
+这样做的好处是，配置方便快捷，不需要增加额外的controller，适用于简单的项目。
 
 如果thumbnail属性为false，后端将不会生成缩略图。
 
@@ -76,12 +82,10 @@ class EditorController extends UeditorController{
 
 3、在view中使用widget。
 
-注意：与上一个版本不同，这里需要删除原来的输入框，widget会自动生成。
-
-配合AR使用：
+配合CActiveForm和ActiveRecord（model）使用：
 
 ```php
-    $this->widget('ext.ueditor.UeditorWidget',
+    $form->widget('ext.ueditor.UeditorWidget',
             array(
                 'model' => $model,
                 'attribute' => 'content',
@@ -111,7 +115,7 @@ class EditorController extends UeditorController{
 
 当扩展被当做普通表单使用时，其name为必填项。id可以通过id配置或者htmlOptions配置引入，如果没有设置id，扩展将自动生成。
 
-widget默认的serverUrl为/ueditor，如果自己写了controller或者在controllerMap中配置了多个控制器，那么一定要在widget的配置中增加serverUrl的配置。
+widget默认的serverUrl为`ueditor/index`，如果自己写了controller或者在controllerMap中配置了多个控制器，可以为不同的widget指定对应的serverUrl的地址，可以适用不同的场景。
 
 如果thumbnail属性为false，前端将不会附加缩略图管理代码。
 
@@ -119,9 +123,7 @@ widget默认的serverUrl为/ueditor，如果自己写了controller或者在contr
 
 4、错误排除
 
-- 出现错误首先应该打开调试工具查看请求返回具体信息。
-
-- 因为编辑器通常使用场景为后台，所以图片上传等功能默认需要登录权限，如果不需要可以自行修改。
+- 出现错误首先应该打开浏览器调试工具查看请求返回具体信息。
 
 - 默认上传路径为「应用根目录」，而不是网站根目录，如果上传失败请查看目录权限。
 
@@ -133,5 +135,7 @@ widget默认的serverUrl为/ueditor，如果自己写了controller或者在contr
 其他说明
 ---------------------
 @see https://github.com/fex-team/ueditor
+
+@see https://github.com/xbzbing/Yii2-Ueditor
 
 参考：[［更新］UEditor1.4.3-for-Yii1-扩展](http://www.crazydb.com/archive/更新_UEditor1.4.3-for-Yii1-扩展 "UEditor1.4.3-for-Yii1-扩展")。
