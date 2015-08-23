@@ -102,7 +102,7 @@ class EditorController extends UeditorController{
             'id'=>'Post_excerpt',
             'value' => '输入值',
             'config'=>array(
-                'serverUrl' => Yii::app()->createUrl('editor/'),//指定serverUrl
+                'serverUrl' => Yii::app()->createUrl('editor/index'),//指定serverUrl，用于文件上传处理。默认是｀ueditor/index｀，如果自己实现了上传接口，可以更改通过修改`serverurl`来使用自定义的后端接口。
                 'toolbars'=>array(
                     array('source','link','bold','italic','underline','forecolor','superscript','insertimage','spechars','blockquote')
                 ),
@@ -115,7 +115,7 @@ class EditorController extends UeditorController{
 
 当扩展被当做普通表单使用时，其name为必填项。id可以通过id配置或者htmlOptions配置引入，如果没有设置id，扩展将自动生成。
 
-widget默认的serverUrl为`ueditor/index`，如果自己写了controller或者在controllerMap中配置了多个控制器，可以为不同的widget指定对应的serverUrl的地址，可以适用不同的场景。
+widget默认的serverUrl为`ueditor/index`，是UEditor的后端地址。如果自己写了controller或者在controllerMap中配置了多个后端控制器，可以通过修改widget的`serverUrl`地址来指定使用不同的后端接口，以适应不同的场景。
 
 如果thumbnail属性为false，前端将不会附加缩略图管理代码。
 
@@ -123,7 +123,7 @@ widget默认的serverUrl为`ueditor/index`，如果自己写了controller或者�
 
 4、错误排除
 
-- 出现错误首先应该打开浏览器调试工具查看请求返回具体信息。
+- 出现错误首先应该打开浏览器调试工具（F12）查看请求返回具体信息。
 
 - 默认上传路径为「应用根目录」，而不是网站根目录，如果上传失败请查看目录权限。
 
