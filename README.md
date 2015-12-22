@@ -14,11 +14,9 @@ Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
 
 使用TP框架的tpImage来生成和处理图片。
 
-注意：2015.2.2 更新版本与之前并不兼容，本次修改更贴近InputWidget的设计意图，扩展使用时将不再需要原有的输入框。
-
 update：
 
-移除登录权限限制，目的时希望开发者能通过继承UeditorController来完善各个action的权限。
+移除登录权限限制，目的是希望开发者能通过继承UeditorController来完善各个action的权限。
 
 Yii2版本的扩展参考 [Yii2-UEditor](https://github.com/xbzbing/Yii2-UEditor "Yii2版本的UEditor扩展") 。
 
