@@ -2,13 +2,13 @@ Yii1-UEditor
 ===================
 项目更名为Yii1-UEditor，采用2推荐的方式重新命名，方便管理。
 
-Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3。
+Yii v1.x 的UEditor扩展，支持的UEditor版本为1.4.3.3（20160526版本）。
 
 测试使用的PHP版本为5.5.9，测试使用的Yii版本是1.1.15，采用alias的方式部署在Ubuntu apache 2.4.7。
 
 扩展特性：
 
-支持自动的缩略图管理（默认开启，可以关闭）。
+支持自动的缩略图管理（默认关闭）。
 
 支持水印（默认关闭，可以开启）。
 
@@ -128,6 +128,8 @@ widget默认的serverUrl为`ueditor/index`，是UEditor的后端地址。如果�
 - 不要开启Yii的调试，因为UEditor的返回都是json格式，开启调试会导致返回格式不识别。
 
 - 出现404错误可能是因为widget没有正确配置serverUrl。
+
+- 默认不支持内网 IP 图片远程采集，如果部署在内网且需要这个功能,请配置`UEditorController::allowIntranet`为`true`。
 
 
 其他说明
