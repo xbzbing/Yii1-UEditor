@@ -9,6 +9,12 @@
  */
 class Uploader
 {
+    /**
+     * 是否允许采集内网 IP 图片
+     * 默认不允许
+     * @var bool
+     */
+    private $allowIntranet=false;
     private $fileField; //文件域名
     private $file; //文件上传对象
     private $base64; //文件上传对象
@@ -55,13 +61,22 @@ class Uploader
         $this->type = $type;
         if ($type == "remote") {
             $this->saveRemote();
-        } else if($type == "base64") {
+        } else if ($type == "base64") {
             $this->upBase64();
         } else {
             $this->upFile();
         }
 
         $this->stateMap['ERROR_TYPE_NOT_ALLOWED'] = iconv('unicode', 'utf-8', $this->stateMap['ERROR_TYPE_NOT_ALLOWED']);
+    }
+
+    /**
+     * 设置是否允许获取内网图片
+     * @param boolean $allow
+     */
+    public function setAllowIntranet($allow)
+    {
+        $this->allowIntranet = $allow ? true : false;
     }
 
     /**
@@ -108,7 +123,7 @@ class Uploader
 
         //创建目录失败
         if (!file_exists($dirname) && !mkdir($dirname, 0777, true)) {
-            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR").$dirname;
+            $this->stateInfo = $this->getStateInfo("ERROR_CREATE_DIR") . $dirname;
             return;
         } else if (!is_writeable($dirname)) {
             $this->stateInfo = $this->getStateInfo("ERROR_DIR_NOT_WRITEABLE");
@@ -178,15 +193,36 @@ class Uploader
             $this->stateInfo = $this->getStateInfo("ERROR_HTTP_LINK");
             return;
         }
+
+        preg_match('/(^https?:\/\/[^:\/]+)/', $imgUrl, $matches);
+        $host_with_protocol = count($matches) > 1 ? $matches[1] : '';
+
+        // 判断是否是合法 url
+        if (!filter_var($host_with_protocol, FILTER_VALIDATE_URL)) {
+            $this->stateInfo = $this->getStateInfo("INVALID_URL");
+            return;
+        }
+
+        preg_match('/^https?:\/\/(.+)/', $host_with_protocol, $matches);
+        $host_without_protocol = count($matches) > 1 ? $matches[1] : '';
+
+        // 此时提取出来的可能是 ip 也有可能是域名，先获取 ip
+        $ip = gethostbyname($host_without_protocol);
+        // 判断是否是私有 ip
+        if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+            $this->stateInfo = $this->getStateInfo("INVALID_IP");
+            return;
+        }
+
         //获取请求头并检测死链
-        $heads = get_headers($imgUrl);
+        $heads = get_headers($imgUrl, 1);
         if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
             $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
             return;
         }
         //格式验证(扩展名验证和Content-Type验证)
         $fileType = strtolower(strrchr($imgUrl, '.'));
-        if (!in_array($fileType, $this->config['allowFiles']) || stristr($heads['Content-Type'], "image")) {
+        if (!in_array($fileType, $this->config['allowFiles']) || !isset($heads['Content-Type']) || !stristr($heads['Content-Type'], "image")) {
             $this->stateInfo = $this->getStateInfo("ERROR_HTTP_CONTENTTYPE");
             return;
         }
@@ -203,7 +239,7 @@ class Uploader
         ob_end_clean();
         preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
 
-        $this->oriName = $m ? $m[1]:"";
+        $this->oriName = $m ? $m[1] : "";
         $this->fileSize = strlen($img);
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
@@ -292,7 +328,8 @@ class Uploader
      * 获取文件名
      * @return string
      */
-    private function getFileName () {
+    private function getFileName()
+    {
         return substr($this->filePath, strrpos($this->filePath, '/') + 1);
     }
 

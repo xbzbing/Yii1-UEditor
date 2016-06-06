@@ -34,9 +34,10 @@ class UeditorController extends CExtController
     public $thumbnail = true;
     /**
      * 缩略图大小
+     * 默认关闭
      * @var array
      */
-    public $size = array('height' => '200', 'width' => '200');
+    public $size = array();
 
     /**
      * 水印图片的地址
@@ -49,6 +50,14 @@ class UeditorController extends CExtController
      * @var int
      */
     public $locate = 9;
+
+    /**
+     * 是否允许内网采集
+     * 如果为 false 则远程图片获取不获取内网图片，防止 SSRF。
+     * 默认为 false
+     * @var bool
+     */
+    public $allowIntranet = false;
 
     /**
      * 应用根目录
@@ -230,11 +239,13 @@ class UeditorController extends CExtController
         }
         foreach ($source as $imgUrl) {
             $item = new Uploader($imgUrl, $config, "remote");
+            if ($this->allowIntranet)
+                $item->setAllowIntranet(true);
             $info = $item->getFileInfo();
             $info['thumbnail'] = $this->baseUrl . $this->imageHandle($info['url']);
             $list[] = array(
                 "state" => $info["state"],
-                "url" => $this->baseUrl. $info["url"],
+                "url" => $this->baseUrl . $info["url"],
                 "source" => $imgUrl
             );
         }
@@ -255,6 +266,8 @@ class UeditorController extends CExtController
     protected function upload($fieldName, $config, $base64 = 'upload')
     {
         $up = new Uploader($fieldName, $config, $base64);
+        if ($this->allowIntranet)
+            $up->setAllowIntranet(true);
         $info = $up->getFileInfo();
         if ($this->thumbnail && $info['state'] == 'SUCCESS' && in_array($info['type'], array('.png', '.jpg', '.bmp', '.gif'))) {
             $info['thumbnail'] = $this->baseUrl . $this->imageHandle($info['url']);
