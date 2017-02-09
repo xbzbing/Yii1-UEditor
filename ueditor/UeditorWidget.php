@@ -96,7 +96,13 @@ class UeditorWidget extends CInputWidget
             $this->config['serverUrl'] = Yii::app()->createUrl('ueditor/index');
         elseif (is_array($this->config['serverUrl']))
             $this->config['serverUrl'] = Yii::app()->createUrl($this->config['serverUrl']);
-
+        
+        // 如果Yii开启CSRF载入将token载入到serverPostParams自定义参数中
+        if (Yii::app()->request->enableCsrfValidation) 
+            $this->config['serverPostParams'][Yii::app()->request->csrfTokenName] = Yii::app()->request->csrfToken;
+        else
+            $this->config['serverPostParams'][Yii::app()->request->csrfTokenName] = '';
+        
         if (empty($this->config['lang']))
             $this->config['lang'] = 'zh-cn';
 
